@@ -1,0 +1,22 @@
+{
+  "name": "susadiysanthumbnail",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^2.6.1",
+    "express": "^4.17.1",
+    "cors": "^2.8.5",
+    "jimp": "^0.16.1",
+    "text2png": "^2.3.0",
+    "sanitize-filename": "^1.6.3",
+    "ws": "^8.2.2",
+    "busboy": "^0.3.1"
+  }
+}
