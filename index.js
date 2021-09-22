@@ -1,3 +1,6 @@
+if (!process.env.PROJECT_DOMAIN)
+    process.env.PROJECT_DOMAIN = "susadiysanthumbnail";
+
 const path = require("path");
 const fs = require("fs");
 const os = require("os");
@@ -92,14 +95,17 @@ app.post("/:streamerName", function (req, res) {
     busboy.on("finish", async function () {
         console.log("Upload complete");
         //res.writeHead(200, { Connection: "close" });
-        //res.end(`https://${process.env.PROJECT_DOMAIN}.glitch.me/${imgPath}`);
+        //res.end(`https://${process.env.PROJECT_DOMAIN}.herokuapp.com/${imgPath}`);
         await makeThumbnail(streamerName, thumbnailName, res, await Jimp.read(imgPath));
         fs.rmSync(imgPath);
     });
     return req.pipe(busboy);
 });
 
-let server = app.listen(3000, function () {
+//# use alternate localhost and the port Heroku assigns to $PORT
+const host = '0.0.0.0';
+const port = process.env.PORT || 3000;
+let server = app.listen(port, host, function () {
     let host = server.address().address;
     let port = server.address().port;
 
@@ -191,14 +197,14 @@ async function makeThumbnail(streamerName, title, res, streamerImg) {
         streamer.write(thumbnailPath, (err, value) => {
             if (res) {
                 res.writeHead(200, { Connection: "close" });
-                res.end(`https://${process.env.PROJECT_DOMAIN}.glitch.me/${encodeURIComponent(streamerName)}/${encodeURIComponent(sanitize(title))}.png`);
-                console.log(`https://${process.env.PROJECT_DOMAIN}.glitch.me/${encodeURIComponent(streamerName)}/${encodeURIComponent(sanitize(title))}.png`);
+                res.end(`https://${process.env.PROJECT_DOMAIN}.herokuapp.com/${encodeURIComponent(streamerName)}/${encodeURIComponent(sanitize(title))}.png`);
+                console.log(`https://${process.env.PROJECT_DOMAIN}.herokuapp.com/${encodeURIComponent(streamerName)}/${encodeURIComponent(sanitize(title))}.png`);
                 return;
 
                 if (res.sendFile && sendFile) {
                     res.sendFile(path.resolve(__dirname, thumbnailPath));
                 } else {
-                    res.send(JSON.stringify({ t: 3, s: streamerName, n: title, d: `https://${process.env.PROJECT_DOMAIN}.glitch.me/${thumbnailPath}` }))
+                    res.send(JSON.stringify({ t: 3, s: streamerName, n: title, d: `https://${process.env.PROJECT_DOMAIN}.herokuapp.com/${thumbnailPath}` }))
                 }
             }
         }); // save
